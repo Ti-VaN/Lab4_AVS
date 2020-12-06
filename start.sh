@@ -54,5 +54,6 @@ do
 	esac
 	#test commits git
 	echo "test"
+	echo "test on desktop git"
 done
 exit 0
