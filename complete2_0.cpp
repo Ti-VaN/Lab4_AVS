@@ -82,9 +82,9 @@ int main(int argc, char *argv[])
 
     double **X, **Y, **R;
     double *A, *B, *C;
-    int size = 1000;
+    int size = 500;
     double someTime, sumTime, averageTime;
-    int choice = 3;
+    int choice = 2;
     double speedBLAS[4];
 
     int i, j, k, l, p, w;
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
             averageTime = sumTime/10;
             cout << "averageTime = " << averageTime << endl;
 			fout << "DGEMM_BLAS;" << size << ";" << averageTime << "\n";
-            size += 1000 + 2000*k;
+            size += 500 + 500*k;
         }
         break;
 
@@ -177,13 +177,16 @@ int main(int argc, char *argv[])
             cout << "averageTime = " << averageTime << endl;
             // cout << "Speed: x" << averageTime/speedBLAS[k] << endl;
 			fout << "DGEMM_opt_1;" << size << ";" << averageTime << "\n";
-            size += 1000 + 2000*k;
+            size += 500 + 500*k;
         }
         break;
 
     case 2:
         for(k = 0; k < 4; k++)
         {
+            int blockSize[5] = { 4, 20, 50, 100, 250 };
+            double blockTime[5];  
+            int id = 0;
             for(l = 0; l < 5; l++)
             {
                 sumTime = 0;
@@ -203,19 +206,26 @@ int main(int argc, char *argv[])
                             C[i*size + j] = 0;
                         }
                     }
-                    DGEMM_opt_2(size, A, B, C, (int)pow(2, l+3), someTime);
-                    cout << "№" << p + 1 << "DGEMM_opt_2 " << size << " " << someTime << " Block size: " << pow(2, l+3) << endl;
+                    DGEMM_opt_2(size, A, B, C, blockSize[l], someTime);
+                    cout << "№" << p + 1 << "DGEMM_opt_2 " << size << " " << someTime << " Block size: " << blockSize[l] << endl;
                     sumTime += someTime;
                     delete[]A;
                     delete[]B;
                     delete[]C;
                 }
                 averageTime = sumTime/10;
+                blockTime[l] = averageTime;
                 cout << "averageTime = " << averageTime << endl;
-				fout << "DGEMM_opt_2;" << size << ";" << pow(2, l+3) << ";" << averageTime << "\n";
+				fout << "DGEMM_opt_2;" << size << ";" << blockSize[l] << ";" << averageTime << "\n";
                 // cout << "Speed: x" << averageTime/speedBLAS[k] << endl;               
             }
-			size += 1000 + 2000*k;
+            for(l = 0; l < 5; l++)
+            {
+                if(blockTime[l] < blockTime[id])
+                    id = l;
+            }
+            cout << "Оптимальный Block size для матрицы размерности " << size << ": " << blockSize[id] << endl << endl;
+			size += 500 + 500*k;
         }
         break;
 
@@ -250,7 +260,7 @@ int main(int argc, char *argv[])
             cout << "averageTime = " << averageTime << endl;
             // cout << "Speed: x" << averageTime/speedBLAS[k] << endl;
 			fout << "DGEMM_opt_3;" << size << ";" << averageTime << "\n";
-            size += 1000 + 2000*k;
+            size += 500 + 500*k;
         }
         break;
     }
@@ -259,3 +269,4 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
