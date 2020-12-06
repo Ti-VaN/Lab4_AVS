@@ -52,5 +52,7 @@ do
 			exit 0
 			;;
 	esac
+	#test commits git
+	echo "test"
 done
 exit 0
