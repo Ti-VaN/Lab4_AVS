@@ -224,7 +224,7 @@ int main(int argc, char *argv[])
                 if(blockTime[l] < blockTime[id])
                     id = l;
             }
-            cout << "Оптимальный Block size для матрицы размерности " << size << ": " << blockSize[id] << endl << endl;
+            cout << "Optimal Block size for a dimension matrix" << size << ": " << blockSize[id] << endl << endl;
 			size += 500 + 500*k;
         }
         break;
