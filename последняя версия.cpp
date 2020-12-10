@@ -38,9 +38,9 @@ void DGEMM_opt_1_1(double* X, double* Y, double *R, int N, double& time)
 {   int i, j, k;
     auto start = chrono::steady_clock::now();
     for (i = 0; i < N; i++) 
-	for (j = 0; j < N; j++) 
-		for (k = 0; k < N; k++) 
-			R[i * N + k] += X[i * N + j] * Y[j * N + k];
+	for (k = 0; k < N; k++) 
+		for (j = 0; j < N; j++) 
+			R[i * N + j] += X[i * N + k] * Y[k * N + j];
     auto end = chrono::steady_clock::now();
     chrono::duration<double> elapsed_seconds = end - start;
     time = elapsed_seconds.count();
@@ -50,9 +50,9 @@ void DGEMM_opt_1_2(double** X, double** Y, double **R, int N, double& time)
 {
     auto start = chrono::steady_clock::now();
     for (int i=0;i<N;i++)
-        for (int j=0;j<N;j++)
-            for (int k=0;k<N;k++)
-                R[i][k]+=X[i][j]*Y[j][k];
+        for (int k=0;k<N;k++)
+            for (int j=0;j<N;j++)
+                R[i][j]+=X[i][k]*Y[k][j];
     auto end = chrono::steady_clock::now();
     chrono::duration<double> elapsed_seconds = end - start;
     time = elapsed_seconds.count();
@@ -62,22 +62,22 @@ void DGEMM_opt_1_2(double** X, double** Y, double **R, int N, double& time)
 void DGEMM_opt_2(int size, double *X, double *Y, double *R, int size_block, double& time)
 {
     int i, j, k, ik, jk, kk;
-    for(j = 0; j < size; j++)
+    for(i = 0; i < size; i++)
     {
-        for(i = 0; i < size; i++)
+        for(j = 0; j < size; j++)
         {
-            R[j * size + i] = 0;
+            R[i * size + j] = 0;
         }
     }
     auto start = chrono::steady_clock::now();
-    for(jk = 0; jk < size; jk+= size_block)
+    for(ik = 0; ik < size; ik+= size_block)
         for(kk = 0; kk < size; kk+= size_block)
-            for(ik = 0; ik < size; ik+= size_block)
-                for(j = 0; j < size_block; j++ )
+            for(jk = 0; jk < size; jk+= size_block)
+                for(i = 0; i < size_block; i++ )
                     for(k = 0; k < size_block; k++ )
 #pragma simd
-                        for(i = 0; i < size_block; i++ )
-                            R[(jk + j) * size + (ik + i)] += X[(jk + j) * size + (kk + k)] * Y[(kk + k) * size + (ik + i)];
+                        for(j = 0; j < size_block; j++ )
+                            R[(ik + i) * size + (jk + j)] += X[(ik + i) * size + (kk + k)] * Y[(kk + k) * size + (jk + j)];
     auto end = chrono::steady_clock::now();
     chrono::duration<double> elapsed_seconds = end - start;
     time = elapsed_seconds.count();
@@ -87,15 +87,15 @@ void DGEMM_opt_3(int n, double *A, double *B, double *C, double& time)
 {
     int i, j, k;
     auto start = chrono::steady_clock::now();
-    for(j = 0; j < n; j++ )
-        for(i = 0; i < n; i++ )
-            C[j * n + i] = 0;
-    for(j = 0; j < n; j++ )
+    for(i = 0; i < n; i++ )
+        for(j = 0; j < n; j++ )
+            C[i * n + j] = 0;
+    for(i = 0; i < n; i++ )
         for(k = 0; k < n; k++ )
 // делает векторизацию кода
 #pragma simd
-            for(i = 0; i < n; i++ )
-                C[j * n + i] += A[j * n + k] * B[k * n + i];
+            for(j = 0; j < n; j++ )
+                C[i * n + j] += A[i * n + k] * B[k * n + j];
     auto end = chrono::steady_clock::now();
     chrono::duration<double> elapsed_seconds = end - start;
     time = elapsed_seconds.count();
