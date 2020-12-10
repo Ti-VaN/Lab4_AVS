@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
     switch (choice)
     {
     case 0:
-        for(k = 0; k < 4; k++)
+        for(k = 0; k < 2; k++)
         {
             sumTime = 0;
             averageTime = 0;
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
         break;
 
     case 1:
-        for(k = 0; k < 4; k++)
+        for(k = 0; k < 2; k++)
         {
             sumTime = 0;
             averageTime = 0;
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
         break;
 
     case 2:
-        for(k = 0; k < 4; k++)
+        for(k = 0; k < 2; k++)
         {
             int blockSize[5] = { 4, 20, 50, 100, 250 };
             double blockTime[5];  
@@ -230,7 +230,7 @@ int main(int argc, char *argv[])
         break;
 
     case 3:
-        for(k = 0; k < 4; k++)
+        for(k = 0; k < 2; k++)
         {
             sumTime = 0;
             averageTime = 0;
