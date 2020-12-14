@@ -1,4 +1,26 @@
 #/bin/bash
+OPTION=""
+while [ -n "$1" ]
+do
+	case "$1" in
+		--DGEMM_BLAS)
+			opt="DGEMM_BLAS"
+			OPTION="$OPTION $opt"
+			;;
+		--DGEMM_opt1)
+			opt="DGEMM_opt1"
+			OPTION="$OPTION $opt"
+			;;
+		--DGEMM_opt2)
+			opt="DGEMM_opt2"
+			OPTION="$OPTION $opt"
+			;;
+		--DGEMM_opt3)
+			opt="DGEMM_opt3"
+			OPTION="$OPTION $opt"
+	esac
+shift
+done
 while [ 1 ]
 do
 	echo "1. Запустить отлаженную программу"
@@ -15,11 +37,11 @@ do
 			read param
 			if [ -e $PWD/old_version.exe ]
 			then
-				./old_version.exe $param
+				./old_version.exe $OPTION $param
 			else
 				if [ -e $PWD/new_version.exe ]
 				then	
-					./new_version.exe $param
+					./new_version.exe $OPTION $param
 				#Если ни один файл не найден
 				else
 					echo "File not found"
@@ -38,11 +60,11 @@ do
 				#меняется её название, компилируется новая
 				mv new_version.exe old_version.exe
 				g++ -o new_version.exe $file
-				./new_version.exe $param
+				./new_version.exe $OPTION $param
 			else
 				#если первая компиляция
 				g++ -o new_version.exe $file
-				./new_version.exe $param
+				./new_version.exe $OPTION $param
 			fi
 			;;
 		3)
@@ -52,7 +74,7 @@ do
 			echo "Enter parameters:"
 			read param
 			g++ -o new_version.exe $file
-			./new_version.exe $param
+			./new_version.exe $OPTION $param
 			;;
 		4)
 			exit 0
