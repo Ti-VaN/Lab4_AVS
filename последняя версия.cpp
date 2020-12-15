@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
     double **A, **B, **C;
     int size = 500;
     double someTime1, sumTime1, averageTime1, someTime2, sumTime2, averageTime2;
-    double speedBLAS[4];
+    double speedBLAS[4] = {2.067, 15.5995, 141.126, 857.241};
 
     int i, j, k, l, p, w;
 
@@ -219,8 +219,8 @@ int main(int argc, char *argv[])
                         }
                         averageTime1 = sumTime1 / 10;
                         cout << "averageTime1 = " << averageTime1 << endl;
-                        // cout << "Speed: x" << speedBLAS[k]/averageTime1 << endl;
-                        fout << "DGEMM_opt_1;" << size << ";" << averageTime1 << "\n";
+                        cout << "Speed: x" << speedBLAS[k]/averageTime1 << endl;
+                        fout << "DGEMM_opt_1;" << size << ";" << averageTime1 << speedBLAS[k]/averageTime1 << ";" << "\n";
                         size += 500 + 500 * k;
                     }
                 }
@@ -260,8 +260,8 @@ int main(int argc, char *argv[])
                             averageTime1 = sumTime1 / 10;
                             blockTime[l] = averageTime1;
                             cout << "averageTime = " << averageTime1 << endl;
-                            fout << "DGEMM_opt_2;" << size << ";" << blockSize[l] << ";" << averageTime1 << "\n";
-                            // cout << "Speed: x" << speedBLAS[k]/averageTime1 << endl;
+                            fout << "DGEMM_opt_2;" << size << ";" << blockSize[l] << ";" << averageTime1 << speedBLAS[k]/averageTime1 << ";" << "\n";
+                            cout << "Speed: x" << speedBLAS[k]/averageTime1 << endl;
                         }
                         for (l = 0; l < 5; l++)
                         {
@@ -303,8 +303,8 @@ int main(int argc, char *argv[])
                         }
                         averageTime1 = sumTime1 / 10;
                         cout << "averageTime = " << averageTime1 << endl;
-                        // cout << "Speed: x" << speedBLAS[k]/averageTime1 << endl;
-                        fout << "DGEMM_opt_3;" << size << ";" << averageTime1 << "\n";
+                        cout << "Speed: x" << speedBLAS[k]/averageTime1 << endl;
+                        fout << "DGEMM_opt_3;" << size << ";" << averageTime1 << speedBLAS[k]/averageTime1 << ";" << "\n";
                         size += 500 + 500 * k;
                     }
                 }
