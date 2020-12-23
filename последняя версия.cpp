@@ -96,6 +96,24 @@ void DGEMM_opt_3(int n, double *A, double *B, double *C, double &time)
     time = elapsed_seconds.count();
 }
 
+void mass_comp(double *A, double *B, int size)
+{
+    int i, j;
+    bool b = true;
+    for(i = 0; i < size; i++)
+    {
+        if(A[i] != B[i])
+        {
+            b = false;
+            break;
+        }
+    }
+    if(b == true)
+        cout << "Массивы равны";
+    else
+        cout << "Массивы не равны";
+}
+
 int main(int argc, char *argv[])
 {
 
