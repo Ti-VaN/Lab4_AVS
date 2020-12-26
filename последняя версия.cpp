@@ -130,6 +130,7 @@ int main(int argc, char *argv[])
     double speedBLAS[4] = {2.067, 15.5995, 141.126, 857.241};
 
     int i, j, k, l, p, w;
+    bool badCalcs = false;
 
     ofstream fout;
     fout.open("result.csv");
@@ -143,6 +144,7 @@ int main(int argc, char *argv[])
                 {
                     for (k = 0; k < 4; k++)
                     {
+                        bool badCalcs = false;
                         sumTime1 = 0;
                         averageTime1 = 0;
                         sumTime2 = 0;
@@ -182,6 +184,23 @@ int main(int argc, char *argv[])
                             DGEMM_BLAS_2(A, B, C, size, someTime2);
                             cout << "№" << p + 1 << " DGEMM_BLAS_2 " << size << " " << someTime2 << endl;
                             sumTime2 += someTime2;
+
+                            Verif = DGEM_BLASS_2(A, B, C, size, someTime2);
+                            R = DGEM_BLASS_1((X, Y, R, size, someTime1);
+                            for(i = 0; i < size; i++)
+                                for(j = 0; j < size; j++)
+                                    if(Verif[i][j] != R[i][j])
+                                    {
+                                        badCalcs = true;
+                                        break;
+                                    }
+
+                            if(badCalcs)
+                            {
+                                cout << "Calculation verification failed";
+                                delete[] Verif;
+                                return 1;
+                            }
                             delete[] X;
                             delete[] Y;
                             delete[] R;
@@ -231,6 +250,23 @@ int main(int argc, char *argv[])
                             cout << "№" << p + 1 << " DGEMM_opt_1 " << size << " " << someTime1 << endl;
                             sumTime1 += someTime1;
 
+                            Verif = DGEM_BLASS_2(A, B, C, size, someTime2);
+                            R = DGEMM_opt_1(X, Y, R, size, someTime1);
+                            for(i = 0; i < size; i++)
+                                for(j = 0; j < size; j++)
+                                    if(Verif[i][j] != R[i][j])
+                                    {
+                                        badCalcs = true;
+                                        break;
+                                    }
+
+                            if(badCalcs)
+                            {
+                                cout << "Calculation verification failed";
+                                delete[] Verif;
+                                return 1;
+                            }
+
                             delete[] X;
                             delete[] Y;
                             delete[] R;
@@ -271,6 +307,24 @@ int main(int argc, char *argv[])
                                 DGEMM_opt_2(size, X, Y, R, blockSize[l], someTime1);
                                 cout << "№" << p + 1 << " DGEMM_opt_2 " << size << " " << someTime1 << " Block size: " << blockSize[l] << endl;
                                 sumTime1 += someTime1;
+
+                            Verif = DGEM_BLASS_2(A, B, C, size, someTime2);
+                            R = DGEMM_opt_2(X, Y, R, size, someTime1);
+                            for(i = 0; i < size; i++)
+                                for(j = 0; j < size; j++)
+                                    if(Verif[i][j] != R[i][j])
+                                    {
+                                        badCalcs = true;
+                                        break;
+                                    }
+
+                            if(badCalcs)
+                            {
+                                cout << "Calculation verification failed";
+                                delete[] Verif;
+                                return 1;
+                            }
+
                                 delete[] X;
                                 delete[] Y;
                                 delete[] R;
@@ -315,6 +369,22 @@ int main(int argc, char *argv[])
                             DGEMM_opt_3(size, X, Y, R, someTime1);
                             cout << "№" << p + 1 << " DGEMM_opt_3 " << size << " " << someTime1 << endl;
                             sumTime1 += someTime1;
+                            Verif = DGEM_BLASS_2(A, B, C, size, someTime2);
+                            R = DGEMM_opt_3(X, Y, R, size, someTime1);
+                            for(i = 0; i < size; i++)
+                                for(j = 0; j < size; j++)
+                                    if(Verif[i][j] != R[i][j])
+                                    {
+                                        badCalcs = true;
+                                        break;
+                                    }
+
+                            if(badCalcs)
+                            {
+                                cout << "Calculation verification failed";
+                                delete[] Verif;
+                                return 1;
+                            }
                             delete[] X;
                             delete[] Y;
                             delete[] R;
