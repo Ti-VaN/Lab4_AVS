@@ -74,5 +74,7 @@ do
 			exit 0
 			;;
 	esac
+	#Проверка git
+	echo "test2"
 done
 exit 0
